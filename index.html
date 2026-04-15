@@ -136,7 +136,7 @@ footer span{font-size:11px;color:var(--text2);}
   <button class="tab active" onclick="showView('home')">home</button>
   <button class="tab" id="tab-offer" onclick="showView('offer')"><span class="tab-dot"></span>offer builder</button>
   <button class="tab" id="tab-email" onclick="showView('home')"><span class="tab-dot off"></span>email templates</button>
-  <button class="tab" id="tab-price" onclick="showView('home')"><span class="tab-dot off"></span>price calculator</button>
+  <button class="tab" id="tab-price" onclick="showView('price')"><span class="tab-dot"></span>price calculator</button>
 </div>
 
 <!-- HOME VIEW -->
@@ -161,12 +161,12 @@ footer span{font-size:11px;color:var(--text2);}
         <div class="tool-desc">pre-built client email templates for confirmations, follow-ups, and special requests.</div>
         <span class="soon-badge">soon</span>
       </div>
-      <div class="tool-card coming-soon">
-        <div class="tool-tag"><span class="tool-dot off"></span>coming soon</div>
+      <button class="tool-card" onclick="showView('price')">
+        <div class="tool-tag"><span class="tool-dot"></span>active</div>
         <div class="tool-name">price calculator</div>
-        <div class="tool-desc">quickly calculate trip totals, per-night rates, and package pricing across multiple properties.</div>
-        <span class="soon-badge">soon</span>
-      </div>
+        <div class="tool-desc">commission, top-up, card fees, fx rates — all your pricing calculations in one place.</div>
+        <span class="tool-arrow">↗</span>
+      </button>
     </div>
   </div>
   <div class="section" style="padding-top:0">
@@ -194,9 +194,137 @@ footer span{font-size:11px;color:var(--text2);}
   </div>
 </div>
 
+<!-- PRICE CALCULATOR VIEW -->
+<div class="view" id="view-price">
+  <div class="ob-wrap">
+    <div style="font-family:'DM Mono',monospace;font-size:15px;font-weight:400;color:#0e0e0e;letter-spacing:.02em;margin-bottom:1.5rem;">gloobles</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:1200px;">
+
+      <!-- COMMISSION ON GROSS RATE -->
+      <div class="panel">
+        <div class="ptitle">Commission on gross rate</div>
+        <div class="sec">
+          <div class="lbl">Gross rate (€)</div>
+          <input type="number" id="c-gross" placeholder="5000" oninput="calcComm()" />
+        </div>
+        <div class="sec">
+          <div class="lbl">Commission (%)</div>
+          <input type="number" id="c-pct" placeholder="10" oninput="calcComm()" />
+        </div>
+        <div style="background:var(--bg2);border-radius:var(--radius-sm);padding:12px 14px;margin-top:4px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div>
+              <div style="font-size:11px;color:var(--text2);margin-bottom:4px;">Commission amount</div>
+              <div style="font-size:20px;font-weight:500;color:var(--gd);" id="c-result">—</div>
+            </div>
+            <div>
+              <div style="font-size:11px;color:var(--text2);margin-bottom:4px;">Net to hotel</div>
+              <div style="font-size:20px;font-weight:500;" id="c-net">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOP-UP ON NET RATE -->
+      <div class="panel">
+        <div class="ptitle">Top-up on net rate</div>
+        <div class="sec">
+          <div class="lbl">Net rate (€)</div>
+          <input type="number" id="t-net" placeholder="4000" oninput="calcTopup()" />
+        </div>
+        <div class="sec">
+          <div class="lbl">Top-up (%)</div>
+          <input type="number" id="t-pct" placeholder="20" oninput="calcTopup()" />
+        </div>
+        <div style="background:var(--bg2);border-radius:var(--radius-sm);padding:12px 14px;margin-top:4px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div>
+              <div style="font-size:11px;color:var(--text2);margin-bottom:4px;">Amount to charge client</div>
+              <div style="font-size:20px;font-weight:500;color:var(--gd);" id="t-result">—</div>
+            </div>
+            <div>
+              <div style="font-size:11px;color:var(--text2);margin-bottom:4px;">Your margin</div>
+              <div style="font-size:20px;font-weight:500;" id="t-margin">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PERCENTAGE CALCULATOR -->
+      <div class="panel">
+        <div class="ptitle">% of an amount</div>
+        <div style="font-size:11px;color:var(--text2);margin-bottom:10px;">Card fees, FX charges, taxes...</div>
+        <div class="sec">
+          <div class="lbl">Amount (€)</div>
+          <input type="number" id="p-amount" placeholder="3000" oninput="calcPct()" />
+        </div>
+        <div class="sec">
+          <div class="lbl">Percentage (%)</div>
+          <input type="number" id="p-pct" placeholder="2.5" step="0.1" oninput="calcPct()" />
+        </div>
+        <div style="background:var(--bg2);border-radius:var(--radius-sm);padding:12px 14px;margin-top:4px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div>
+              <div style="font-size:11px;color:var(--text2);margin-bottom:4px;">Fee amount</div>
+              <div style="font-size:20px;font-weight:500;color:var(--gd);" id="p-result">—</div>
+            </div>
+            <div>
+              <div style="font-size:11px;color:var(--text2);margin-bottom:4px;">Total incl. fee</div>
+              <div style="font-size:20px;font-weight:500;" id="p-total">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FX CALCULATOR -->
+      <div class="panel">
+        <div class="ptitle">FX rate calculator</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <div style="font-size:11px;color:var(--text2);" id="fx-rate-label">Loading live rates...</div>
+          <button onclick="fetchFX()" style="font-size:11px;background:none;border:0.5px solid #ccc;border-radius:4px;padding:3px 8px;cursor:pointer;color:var(--text2);">↻ refresh</button>
+        </div>
+        <div class="sec">
+          <div class="lbl">Amount</div>
+          <input type="number" id="fx-amount" placeholder="5000" oninput="calcFX()" />
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 24px 1fr;gap:8px;align-items:end;margin-bottom:1rem;">
+          <div>
+            <div class="lbl">From</div>
+            <select id="fx-from" onchange="calcFX()" style="width:100%;padding:7px 10px;font-size:13px;border:0.5px solid #ccc;border-radius:var(--radius-sm);background:#fff;color:var(--text);">
+              <option>EUR</option><option>USD</option><option>GBP</option><option>CHF</option><option>AED</option><option>JPY</option><option>SGD</option><option>HKD</option><option>MXN</option><option>BRL</option>
+            </select>
+          </div>
+          <div style="text-align:center;font-size:16px;color:var(--text2);padding-bottom:8px;">→</div>
+          <div>
+            <div class="lbl">To</div>
+            <select id="fx-to" onchange="calcFX()" style="width:100%;padding:7px 10px;font-size:13px;border:0.5px solid #ccc;border-radius:var(--radius-sm);background:#fff;color:var(--text);">
+              <option>USD</option><option>EUR</option><option>GBP</option><option>CHF</option><option>AED</option><option>JPY</option><option>SGD</option><option>HKD</option><option>MXN</option><option>BRL</option>
+            </select>
+          </div>
+        </div>
+        <div style="background:var(--bg2);border-radius:var(--radius-sm);padding:12px 14px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div>
+              <div style="font-size:11px;color:var(--text2);margin-bottom:4px;">Converted amount</div>
+              <div style="font-size:20px;font-weight:500;color:var(--gd);" id="fx-result">—</div>
+            </div>
+            <div>
+              <div style="font-size:11px;color:var(--text2);margin-bottom:4px;">Rate</div>
+              <div style="font-size:20px;font-weight:500;" id="fx-rate-display">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <!-- OFFER BUILDER VIEW -->
 <div class="view" id="view-offer">
   <div class="ob-wrap">
+    <div style="font-family:'DM Mono',monospace;font-size:15px;font-weight:400;color:#0e0e0e;letter-spacing:.02em;margin-bottom:1.25rem;">gloobles</div>
+
     <div class="app">
       <div class="panel">
         <div class="ptitle">Offer details</div>
@@ -296,8 +424,70 @@ function showView(name){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('view-'+name).classList.add('active');
-  const tabMap={home:0,offer:1};
+  const tabMap={home:0,offer:1,price:3};
   if(tabMap[name]!==undefined) document.querySelectorAll('.tab')[tabMap[name]].classList.add('active');
+  if(name==='price'&&!fxRates)fetchFX();
+}
+
+// --- CALCULATORS ---
+function fmt(n){return'€'+n.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+
+function calcComm(){
+  const g=parseFloat(document.getElementById('c-gross').value);
+  const p=parseFloat(document.getElementById('c-pct').value);
+  if(isNaN(g)||isNaN(p)){document.getElementById('c-result').textContent='—';document.getElementById('c-net').textContent='—';return;}
+  const comm=g*p/100;
+  document.getElementById('c-result').textContent=fmt(comm);
+  document.getElementById('c-net').textContent=fmt(g-comm);
+}
+
+function calcTopup(){
+  const n=parseFloat(document.getElementById('t-net').value);
+  const p=parseFloat(document.getElementById('t-pct').value);
+  if(isNaN(n)||isNaN(p)){document.getElementById('t-result').textContent='—';document.getElementById('t-margin').textContent='—';return;}
+  const client=n*(1+p/100);
+  document.getElementById('t-result').textContent=fmt(client);
+  document.getElementById('t-margin').textContent=fmt(client-n);
+}
+
+function calcPct(){
+  const a=parseFloat(document.getElementById('p-amount').value);
+  const p=parseFloat(document.getElementById('p-pct').value);
+  if(isNaN(a)||isNaN(p)){document.getElementById('p-result').textContent='—';document.getElementById('p-total').textContent='—';return;}
+  const fee=a*p/100;
+  document.getElementById('p-result').textContent=fmt(fee);
+  document.getElementById('p-total').textContent=fmt(a+fee);
+}
+
+// FX
+let fxRates=null;
+async function fetchFX(){
+  document.getElementById('fx-rate-label').textContent='Loading live rates...';
+  try{
+    const res=await fetch('https://open.er-api.com/v6/latest/EUR');
+    const data=await res.json();
+    if(data.result==='success'){
+      fxRates=data.rates;
+      const d=new Date(data.time_last_update_utc);
+      document.getElementById('fx-rate-label').textContent=`Live rates · updated ${d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}`;
+      calcFX();
+    }
+  }catch(e){
+    document.getElementById('fx-rate-label').textContent='Could not load rates — check connection';
+  }
+}
+
+function calcFX(){
+  if(!fxRates){document.getElementById('fx-result').textContent='—';return;}
+  const amount=parseFloat(document.getElementById('fx-amount').value);
+  const from=document.getElementById('fx-from').value;
+  const to=document.getElementById('fx-to').value;
+  if(isNaN(amount)){document.getElementById('fx-result').textContent='—';document.getElementById('fx-rate-display').textContent='—';return;}
+  const inEur=amount/fxRates[from];
+  const converted=inEur*fxRates[to];
+  const rate=fxRates[to]/fxRates[from];
+  document.getElementById('fx-result').textContent=converted.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' '+to;
+  document.getElementById('fx-rate-display').textContent=rate.toFixed(4);
 }
 
 // --- CALENDAR ---
@@ -427,7 +617,6 @@ hotels[1].cxl='Non-refundable';
 hotels[1].rooms.push({name:'Suite Prestige',price:'2900'});
 rh();
 
-// --- MESSAGE GEN ---
 function fmtDateRange(){
   const ci=picked.ci,co=picked.co;
   if(!ci&&!co)return'';
