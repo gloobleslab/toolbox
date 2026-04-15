@@ -1117,7 +1117,38 @@ function previewConfirm(){
 }
 
 function printConfirm(){
-  generatePDF();
+  const preview=document.getElementById('cf-preview');
+  if(!preview||preview.innerHTML.includes('Fill the form'))return;
+  const btn=document.getElementById('cf-print-btn');
+  btn.textContent='Generating…';btn.disabled=true;
+  const done=()=>{btn.textContent='Download PDF';btn.disabled=false;};
+
+  const doCapture=()=>{
+    html2canvas(preview,{scale:2,useCORS:true,backgroundColor:'#ffffff',logging:false}).then(canvas=>{
+      const {jsPDF}=window.jspdf;
+      const mmW=canvas.width/2*25.4/96;
+      const mmH=canvas.height/2*25.4/96;
+      const doc=new jsPDF({unit:'mm',format:[mmW,mmH],orientation:'portrait'});
+      doc.addImage(canvas.toDataURL('image/jpeg',0.95),'JPEG',0,0,mmW,mmH);
+      const name='gloobles_'+(cfGuests[0]?.name||'booking').split(' ')[0].toLowerCase()+'.pdf';
+      doc.save(name);
+      done();
+    }).catch(e=>{console.error(e);done();});
+  };
+
+  const loadLib=(src,check,cb)=>{
+    if(check())return cb();
+    const s=document.createElement('script');s.src=src;s.onload=cb;document.head.appendChild(s);
+  };
+  loadLib(
+    'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
+    ()=>!!window.jspdf,
+    ()=>loadLib(
+      'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js',
+      ()=>!!window.html2canvas,
+      doCapture
+    )
+  );
 }
 
 function generatePDF(){
@@ -1161,7 +1192,7 @@ function _doGeneratePDF(){
         <div style="font-size:20px;font-weight:500;text-transform:uppercase;margin-bottom:8px;line-height:25px;">HI, ${firstName.toUpperCase()}!</div>
         <div style="font-size:12px;line-height:21px;color:#2D2E2C;">Here is your booking confirmation for ${hotel}.</div>
       </div>
-      ${photoDataUrl?`<img src="${photoDataUrl}" style="width:100%;height:180px;object-fit:cover;margin-bottom:40px;"/>`:`<div style="width:100%;height:160px;background:#E5E7EB;margin-bottom:40px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#939393;">destination photo</div>`}
+      ${photoDataUrl?`<img src="${photoDataUrl}" style="width:100%;height:256px;object-fit:cover;margin-bottom:40px;"/>`:`<div style="width:100%;height:256px;background:#E5E7EB;margin-bottom:40px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#939393;">destination photo</div>`}
       <div style="border-top:1px solid #E5E7EB;border-bottom:1px solid #E5E7EB;">
         <div style="${rs}"><span style="${ls}">booking number</span><span style="${vs}">${booking}</span></div>
         <div style="${rs}"><span style="${ls}">location</span><span style="${vs}">${hotel}<br/>${address}</span></div>
