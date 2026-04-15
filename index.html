@@ -120,6 +120,12 @@ textarea{resize:vertical;min-height:52px;}
 .cxl-hotel-name{font-size:12px;font-weight:500;color:var(--text);min-width:110px;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .cxl-hotel-row textarea{min-height:36px;font-size:12px;padding:5px 8px;}
 
+/* NAV BUTTONS (back / home) */
+.view-nav{display:flex;align-items:center;gap:8px;margin-bottom:1.5rem;}
+.view-nav-btn{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:11px;color:var(--text2);background:none;border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:5px 10px;cursor:pointer;transition:all .15s;letter-spacing:.02em;}
+.view-nav-btn:hover{color:var(--black);border-color:var(--black);}
+.view-nav-btn svg{width:11px;height:11px;flex-shrink:0;}
+
 /* FOOTER */
 footer{border-top:0.5px solid var(--border);padding:1.25rem 2.5rem;display:flex;align-items:center;justify-content:space-between;}
 footer span{font-size:11px;color:var(--text2);}
@@ -204,6 +210,10 @@ footer span{font-size:11px;color:var(--text2);}
 <!-- PRICE CALCULATOR VIEW -->
 <div class="view" id="view-price">
   <div class="ob-wrap">
+    <div class="view-nav">
+      <button class="view-nav-btn" onclick="goBack()"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7.5 2L3.5 6l4 4"/></svg>précédent</button>
+      <button class="view-nav-btn" onclick="showView('home')"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.5 5.5L6 1.5l4.5 4M2.5 4.5V10.5h2.5V7.5h2V10.5h2.5V4.5"/></svg>accueil</button>
+    </div>
     <div style="font-family:'DM Mono',monospace;font-size:15px;font-weight:400;color:#0e0e0e;letter-spacing:.02em;margin-bottom:1.5rem;">gloobles</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:1200px;">
 
@@ -362,6 +372,10 @@ footer span{font-size:11px;color:var(--text2);}
 <!-- OFFER BUILDER VIEW -->
 <div class="view" id="view-offer">
   <div class="ob-wrap">
+    <div class="view-nav">
+      <button class="view-nav-btn" onclick="goBack()"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7.5 2L3.5 6l4 4"/></svg>précédent</button>
+      <button class="view-nav-btn" onclick="showView('home')"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.5 5.5L6 1.5l4.5 4M2.5 4.5V10.5h2.5V7.5h2V10.5h2.5V4.5"/></svg>accueil</button>
+    </div>
     <div style="font-family:'DM Mono',monospace;font-size:15px;font-weight:400;color:#0e0e0e;letter-spacing:.02em;margin-bottom:1.25rem;">gloobles</div>
 
     <div class="app">
@@ -455,6 +469,10 @@ footer span{font-size:11px;color:var(--text2);}
 <!-- BOOKING CONFIRMATION VIEW -->
 <div class="view" id="view-confirm">
   <div class="ob-wrap">
+    <div class="view-nav">
+      <button class="view-nav-btn" onclick="goBack()"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7.5 2L3.5 6l4 4"/></svg>précédent</button>
+      <button class="view-nav-btn" onclick="showView('home')"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.5 5.5L6 1.5l4.5 4M2.5 4.5V10.5h2.5V7.5h2V10.5h2.5V4.5"/></svg>accueil</button>
+    </div>
     <div style="font-family:'DM Mono',monospace;font-size:15px;font-weight:400;color:#0e0e0e;letter-spacing:.02em;margin-bottom:1.25rem;">gloobles</div>
     <div class="app">
       <div class="panel">
@@ -548,12 +566,24 @@ footer span{font-size:11px;color:var(--text2);}
 <script>
 // --- VIEW SWITCHING ---
 const tabMap={home:0,offer:1,price:2,confirm:3};
-function showView(name){
+let navHistory=[];
+let currentView='home';
+function showView(name,fromBack=false){
+  if(!fromBack&&name!==currentView) navHistory.push(currentView);
+  currentView=name;
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('view-'+name).classList.add('active');
   if(tabMap[name]!==undefined) document.querySelectorAll('.tab')[tabMap[name]].classList.add('active');
   if(name==='price'&&!fxRates)fetchFX();
+}
+function goBack(){
+  if(navHistory.length>0){
+    const prev=navHistory.pop();
+    showView(prev,true);
+  } else {
+    showView('home',true);
+  }
 }
 
 // --- CALCULATORS ---
