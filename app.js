@@ -567,7 +567,9 @@ function printConfirm(){
       const mmH=canvas.height/2*25.4/96;
       const doc=new jsPDF({unit:'mm',format:[mmW,mmH],orientation:'portrait'});
       doc.addImage(canvas.toDataURL('image/jpeg',0.95),'JPEG',0,0,mmW,mmH);
-      const name='gloobles_'+(cfGuests[0]?.name||'booking').split(' ')[0].toLowerCase()+'.pdf';
+      const clientName=(cfGuests[0]?.name||'booking').trim();
+      const hotelName=document.getElementById('cf-hotel')?.value.trim()||'hotel';
+      const name='gloobles confirmation - '+hotelName+' - '+clientName+'.pdf';
       doc.save(name);
       done();
     }).catch(e=>{console.error(e);done();});
