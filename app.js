@@ -521,12 +521,12 @@ function previewConfirm(){
         <div style="border-top:1px solid #E5E7EB;display:flex;">
           <div style="width:50%;padding:16px 24px;box-sizing:border-box;">
             <span style="${LS}">arrival</span>
-            <div style="${VS}">${cin}</div>
+            <div style="${VS};white-space:nowrap;">${cin}</div>
           </div>
           <div style="${DIV}"></div>
           <div style="width:50%;padding:16px 24px;box-sizing:border-box;">
             <span style="${LS}">departure</span>
-            <div style="${VS}">${cout}</div>
+            <div style="${VS};white-space:nowrap;">${cout}</div>
           </div>
         </div>
         <div style="border-top:1px solid #E5E7EB;display:flex;">
