@@ -278,8 +278,8 @@ function closeSug(hid){}
 
 // Pre-fill
 addHotel();
-document.getElementById('client').value='Richard';
-document.getElementById('opener').value="I hope you're well, happy Easter!";
+document.getElementById('client').value='Sophie';
+document.getElementById('opener').value="I hope you're well!";
 document.getElementById('dest').value='Paris';
 document.getElementById('nights').value='2';
 document.getElementById('agent').value='The gloobles Team';
@@ -641,16 +641,16 @@ function renderCfRooms(){
 function initConfirm(){
   const s=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v;};
   cfGuests=[];cfGuestId=0;cfRooms=[];cfRoomId=0;
-  addCfGuest('Lise Stolt-Nielsen');
-  addCfRoom('Luxury Double Room');
-  s('cf-booking','196893');
-  s('cf-dest','Amsterdam, Netherlands');
-  s('cf-hotel','The Dylan Hotel');
-  s('cf-address','Keizersgracht 384, 1016 GA Amsterdam, Netherlands');
-  s('cf-in','Monday, 9th March 2026');
-  s('cf-out','Wednesday, 11th March 2026');
-  s('cf-price','\u20ac1,409.42 (2 nights)');
-  s('cf-cxl','Your reservation is cancellable until the 7th of March 2026');
+  addCfGuest('Sophie Martin');
+  addCfRoom('Deluxe Room');
+  s('cf-booking','000001');
+  s('cf-dest','Paris, France');
+  s('cf-hotel','Le Grand Hôtel');
+  s('cf-address','1 Place Vendôme, 75001 Paris, France');
+  s('cf-in','Monday, 1st June 2026');
+  s('cf-out','Wednesday, 3rd June 2026');
+  s('cf-price','\u20ac0,000.00 (2 nights)');
+  s('cf-cxl','Your reservation is cancellable up to 7 days prior to arrival');
   s('cf-occasion','-');
   s('cf-requests','-');
   s('cf-inclusion','Daily Breakfast\nUpgrade upon availability to next room category\nEarly check in and late check out upon availability\nUSD 100 credit in Food & Beverage');
