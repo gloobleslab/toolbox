@@ -398,6 +398,15 @@
         </div>
         <div class="sec">
           <div class="lbl">Cancellation policy</div>
+          <div style="display:flex;gap:6px;margin-bottom:6px;align-items:center;flex-wrap:wrap;">
+            <button class="tog-btn" id="cxl-btn-ref" onclick="setCxlPolicy('refundable')">Refundable</button>
+            <button class="tog-btn" onclick="setCxlPolicy('nonrefundable')">Non refundable</button>
+            <div id="cxl-days-wrap" style="display:none;align-items:center;gap:4px;">
+              <input type="number" id="cxl-days" min="1" value="7" style="width:48px;padding:5px 6px;font-size:12px;border:0.5px solid #ccc;border-radius:var(--radius-sm);font-family:inherit;" onkeydown="if(event.key==='Enter')applyCxlDays()"/>
+              <span style="font-size:11px;color:var(--text2);">days</span>
+              <button class="tog-btn active" onclick="applyCxlDays()" style="padding:5px 10px;">✓</button>
+            </div>
+          </div>
           <input type="text" id="cf-cxl" placeholder="Your reservation is non refundable" />
         </div>
         <div class="sec">

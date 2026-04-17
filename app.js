@@ -362,6 +362,21 @@ function fmtWa(s){
     .replace(/\n/g,'<br>');
 }
 // --- BOOKING CONFIRMATION ---
+function setCxlPolicy(type){
+  const wrap=document.getElementById('cxl-days-wrap');
+  if(type==='refundable'){
+    wrap.style.display='flex';
+    document.getElementById('cxl-days').focus();
+  } else {
+    wrap.style.display='none';
+    document.getElementById('cf-cxl').value='Your reservation is non refundable';
+  }
+}
+function applyCxlDays(){
+  const days=document.getElementById('cxl-days').value||'7';
+  document.getElementById('cf-cxl').value=`Your reservation is cancellable up to ${days} day${days==1?'':'s'} prior to arrival`;
+  document.getElementById('cxl-days-wrap').style.display='none';
+}
 let cals2={cfi:{y:2026,m:3},cfo:{y:2026,m:3}};
 let picked2={cfi:null,cfo:null};
 let inp2={cfi:'cf-in',cfo:'cf-out'};
