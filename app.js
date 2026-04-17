@@ -586,6 +586,7 @@ function printConfirm(){
       const hotelName=document.getElementById('cf-hotel')?.value.trim()||'hotel';
       const name='gloobles confirmation - '+hotelName+' - '+clientName+'.pdf';
       doc.save(name);
+      window.goatcounter?.count({path:'pdf-confirmation',title:'PDF Confirmation downloaded'});
       done();
     }).catch(e=>{console.error(e);done();});
   };
