@@ -126,10 +126,16 @@ function calcComm(){
 function calcTopup(){
   const n=parseFloat(document.getElementById('t-net').value);
   const p=parseFloat(document.getElementById('t-pct').value);
-  if(isNaN(n)||isNaN(p)){document.getElementById('t-result').textContent='—';document.getElementById('t-margin').textContent='—';return;}
+  if(isNaN(n)||isNaN(p)){
+    document.getElementById('t-net-display').textContent='—';
+    document.getElementById('t-margin').textContent='—';
+    document.getElementById('t-result').textContent='—';
+    return;
+  }
   const client=n*(1+p/100);
-  document.getElementById('t-result').textContent=fmt(client);
+  document.getElementById('t-net-display').textContent=fmt(n);
   document.getElementById('t-margin').textContent=fmt(client-n);
+  document.getElementById('t-result').textContent=fmt(client);
 }
 
 function calcPct(){
@@ -363,19 +369,11 @@ function fmtWa(s){
 }
 // --- BOOKING CONFIRMATION ---
 function setCxlPolicy(type){
-  const wrap=document.getElementById('cxl-days-wrap');
-  if(type==='refundable'){
-    wrap.style.display='flex';
-    document.getElementById('cxl-days').focus();
-  } else {
-    wrap.style.display='none';
-    document.getElementById('cf-cxl').value='Your reservation is non refundable';
-  }
-}
-function applyCxlDays(){
-  const days=document.getElementById('cxl-days').value||'7';
-  document.getElementById('cf-cxl').value=`Your reservation is cancellable up to ${days} day${days==1?'':'s'} prior to arrival`;
-  document.getElementById('cxl-days-wrap').style.display='none';
+  document.getElementById('cf-cxl').value=type==='refundable'
+    ?'Your reservation is cancellable up to X days prior to arrival'
+    :'Your reservation is non refundable';
+  document.getElementById('cxl-tog-ref').classList.toggle('active',type==='refundable');
+  document.getElementById('cxl-tog-non').classList.toggle('active',type==='nonrefundable');
 }
 let cals2={cfi:{y:2026,m:3},cfo:{y:2026,m:3}};
 let picked2={cfi:null,cfo:null};
@@ -650,7 +648,7 @@ function initConfirm(){
   s('cf-in','Monday, 1st June 2026');
   s('cf-out','Wednesday, 3rd June 2026');
   s('cf-price','\u20ac0,000.00 (2 nights)');
-  s('cf-cxl','Your reservation is cancellable up to 7 days prior to arrival');
+  s('cf-cxl','Your reservation is cancellable up to X days prior to arrival');
   s('cf-occasion','-');
   s('cf-requests','-');
   s('cf-inclusion','Daily Breakfast\nUpgrade upon availability to next room category\nEarly check in and late check out upon availability\nUSD 100 credit in Food & Beverage');

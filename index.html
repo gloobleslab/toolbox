@@ -102,8 +102,11 @@
           <input type="number" id="c-gross" placeholder="5000" oninput="calcComm()" />
         </div>
         <div class="sec">
-          <div class="lbl">Country</div>
+          <div class="lbl">Country VAT</div>
           <select id="c-country" onchange="calcComm()" style="width:100%;padding:7px 10px;font-size:13px;border:0.5px solid #ccc;border-radius:var(--radius-sm);background:#fff;color:var(--text);">
+            <option value="0">0% — No VAT</option>
+            <option value="custom">Manual %</option>
+            <option disabled>──────────</option>
             <option value="10">France — 10%</option>
             <option value="10">Spain — 10%</option>
             <option value="10">Portugal — 10%</option>
@@ -118,7 +121,6 @@
             <option value="0">Maldives — 0%</option>
             <option value="0">Thailand — 0%</option>
             <option value="0">Bali / Indonesia — 0%</option>
-            <option value="custom">Custom...</option>
           </select>
           <input type="number" id="c-vat-custom" placeholder="VAT %" style="display:none;margin-top:6px;" oninput="calcComm()" />
         </div>
@@ -162,16 +164,18 @@
           <div class="lbl">Top-up (%)</div>
           <input type="number" id="t-pct" placeholder="20" oninput="calcTopup()" />
         </div>
-        <div style="background:var(--bg2);border-radius:var(--radius-sm);padding:12px 14px;margin-top:4px;">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-            <div>
-              <div style="font-size:11px;color:var(--text2);margin-bottom:4px;">Amount to charge client</div>
-              <div style="font-size:20px;font-weight:500;color:var(--gd);" id="t-result">—</div>
-            </div>
-            <div>
-              <div style="font-size:11px;color:var(--text2);margin-bottom:4px;">Your margin</div>
-              <div style="font-size:20px;font-weight:500;" id="t-margin">—</div>
-            </div>
+        <div style="background:var(--bg2);border-radius:var(--radius-sm);padding:12px 14px;margin-top:4px;display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div style="font-size:11px;color:var(--text2);">Net amount</div>
+            <div style="font-size:15px;font-weight:500;" id="t-net-display">—</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div style="font-size:11px;color:var(--text2);">Our top-up / commission</div>
+            <div style="font-size:15px;font-weight:500;" id="t-margin">—</div>
+          </div>
+          <div style="border-top:0.5px solid #ddd;padding-top:10px;display:flex;justify-content:space-between;align-items:center;">
+            <div style="font-size:11px;color:var(--text2);">Invoice to client</div>
+            <div style="font-size:20px;font-weight:500;color:var(--gd);" id="t-result">—</div>
           </div>
         </div>
       </div>
@@ -394,14 +398,9 @@
         </div>
         <div class="sec">
           <div class="lbl">Cancellation policy</div>
-          <div style="display:flex;gap:6px;margin-bottom:6px;align-items:center;flex-wrap:wrap;">
-            <button class="tog-btn" id="cxl-btn-ref" onclick="setCxlPolicy('refundable')">Refundable</button>
-            <button class="tog-btn" onclick="setCxlPolicy('nonrefundable')">Non refundable</button>
-            <div id="cxl-days-wrap" style="display:none;align-items:center;gap:4px;">
-              <input type="number" id="cxl-days" min="1" value="7" style="width:48px;padding:5px 6px;font-size:12px;border:0.5px solid #ccc;border-radius:var(--radius-sm);font-family:inherit;" onkeydown="if(event.key==='Enter')applyCxlDays()"/>
-              <span style="font-size:11px;color:var(--text2);">days</span>
-              <button class="tog-btn active" onclick="applyCxlDays()" style="padding:5px 10px;">✓</button>
-            </div>
+          <div style="display:flex;gap:6px;margin-bottom:6px;">
+            <button class="tog-btn" id="cxl-tog-ref" onclick="setCxlPolicy('refundable')">Refundable</button>
+            <button class="tog-btn" id="cxl-tog-non" onclick="setCxlPolicy('nonrefundable')">Non refundable</button>
           </div>
           <input type="text" id="cf-cxl" placeholder="Your reservation is non refundable" />
         </div>
