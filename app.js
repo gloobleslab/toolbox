@@ -138,6 +138,16 @@ function calcTopup(){
   document.getElementById('t-result').textContent=fmt(client);
 }
 
+function sendToInvoice(){
+  const n=parseFloat(document.getElementById('t-net').value);
+  const p=parseFloat(document.getElementById('t-pct').value);
+  if(isNaN(n)||isNaN(p))return;
+  const total=n*(1+p/100);
+  invItems=[];invItemId=0;
+  addInvItem('',1,total);
+  openTool('invoice');
+}
+
 function calcPct(){
   const a=parseFloat(document.getElementById('p-amount').value);
   const p=parseFloat(document.getElementById('p-pct').value);
