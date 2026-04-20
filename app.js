@@ -141,10 +141,13 @@ function calcTopup(){
 function sendToInvoice(){
   const n=parseFloat(document.getElementById('t-net').value);
   const p=parseFloat(document.getElementById('t-pct').value);
-  if(isNaN(n)||isNaN(p))return;
-  const total=n*(1+p/100);
-  invItems=[];invItemId=0;
-  addInvItem('',1,total);
+  if(!isNaN(n)&&!isNaN(p)){
+    const total=n*(1+p/100);
+    invItems=[];invItemId=0;
+    addInvItem('',1,total);
+    renderInvItems();
+    calcInvTotal();
+  }
   openTool('invoice');
 }
 
