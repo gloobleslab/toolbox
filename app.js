@@ -156,8 +156,8 @@ function calcPct(){
   const p=parseFloat(document.getElementById('p-pct').value);
   if(isNaN(a)||isNaN(p)){document.getElementById('p-result').textContent='—';document.getElementById('p-total').textContent='—';return;}
   const fee=a*p/100;
-  document.getElementById('p-result').textContent=fmt(fee);
-  document.getElementById('p-total').textContent=fmt(a+fee);
+  document.getElementById('p-result').textContent=fee.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2});
+  document.getElementById('p-total').textContent=(a+fee).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2});
 }
 
 // FX
