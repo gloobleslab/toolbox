@@ -85,7 +85,7 @@ document.documentElement.style.setProperty('--nav-h', document.querySelector('na
 // --- CALCULATORS ---
 function fmt(n){return'€'+n.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2});}
 
-let commMode='gross';
+let commMode='ht';
 function setCommMode(mode){
   commMode=mode;
   document.getElementById('comm-tog-gross').classList.toggle('active',mode==='gross');
