@@ -531,7 +531,7 @@ function previewConfirm(){
   const VS="font-family:'GTAmerica',sans-serif;font-size:10px;color:#2D2E2C;line-height:1.55;";
   const DIV='width:0.5px;background:#E5E7EB;flex-shrink:0;';
 
-  const photoOverlay=`<img src="data:image/svg+xml,${encodeURIComponent(GROUP323_SVG)}" style="position:absolute;top:-27px;right:12px;width:50px;height:30px;"/>`;
+  const photoOverlay=`<div style="position:absolute;top:-27px;right:12px;width:50px;height:30px;">${GROUP323_SVG}</div>`;
   const photoEl=photoDataUrl
     ?`<div style="position:relative;margin-bottom:44px;"><img src="${photoDataUrl}" style="width:100%;height:260px;object-fit:cover;display:block;"/>${photoOverlay}</div>`
     :`<div style="position:relative;margin-bottom:44px;"><div style="width:100%;height:260px;background:#E5E7EB;display:flex;align-items:center;justify-content:center;font-family:'GTAmerica',sans-serif;font-size:10px;color:#9CA3AF;">destination photo</div>${photoOverlay}</div>`;
@@ -585,7 +585,7 @@ function previewConfirm(){
         </div>
       </div>`:''}
       <div style="margin-top:44px;padding:28px 0;text-align:center;">
-        <img src="data:image/svg+xml,${encodeURIComponent(BESPOKE_SVG)}" style="width:59px;height:40px;display:block;margin:0 auto 12px;"/>
+        <div style="width:59px;height:40px;display:block;margin:0 auto 12px;">${BESPOKE_SVG}</div>
         <div style="font-family:'GTAmerica',sans-serif;font-size:11px;color:#2D2E2C;">curated travel tips at your fingertips</div>
       </div>
     </div>`;
@@ -600,7 +600,7 @@ function printConfirm(){
   const done=()=>{btn.textContent='Download PDF';btn.disabled=false;};
 
   const doCapture=()=>{
-    html2canvas(preview,{scale:2,useCORS:true,backgroundColor:'#ffffff',logging:false}).then(canvas=>{
+    document.fonts.ready.then(()=>html2canvas(preview,{scale:2,useCORS:true,backgroundColor:'#ffffff',logging:false})).then(canvas=>{
       const {jsPDF}=window.jspdf;
       const mmW=canvas.width/2*25.4/96;
       const mmH=canvas.height/2*25.4/96;
