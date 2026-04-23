@@ -211,7 +211,7 @@ function rc(id){
   const dim=new Date(y,m+1,0).getDate();
   const td=new Date();
   const s=picked[id];
-  let h=`<div class="cal-nav"><button onclick="cn('${id}',-1)">‹</button><span>${MONTHS[m]} ${y}</span><button onclick="cn('${id}',1)">›</button></div><div class="cal-grid">`;
+  let h=`<div class="cal-nav"><button onclick="cn(event,'${id}',-1)">‹</button><span>${MONTHS[m]} ${y}</span><button onclick="cn(event,'${id}',1)">›</button></div><div class="cal-grid">`;
   DNAMES.forEach(d=>h+=`<div class="cdn">${d}</div>`);
   for(let i=0;i<first;i++)h+=`<div class="cd em"></div>`;
   for(let d=1;d<=dim;d++){
@@ -222,7 +222,8 @@ function rc(id){
   h+=`</div>`;
   document.getElementById(id).innerHTML=h;
 }
-function cn(id,dir){
+function cn(e,id,dir){
+  e.stopPropagation();
   let{y,m}=cals[id];m+=dir;
   if(m<0){m=11;y--;}if(m>11){m=0;y++;}
   cals[id]={y,m};rc(id);
@@ -409,7 +410,7 @@ function rc2(id){
   const dim=new Date(y,m+1,0).getDate();
   const td=new Date();
   const s=picked2[id];
-  let h=`<div class="cal-nav"><button onclick="cn2('${id}',-1)">‹</button><span>${MONTHS[m]} ${y}</span><button onclick="cn2('${id}',1)">›</button></div><div class="cal-grid">`;
+  let h=`<div class="cal-nav"><button onclick="cn2(event,'${id}',-1)">‹</button><span>${MONTHS[m]} ${y}</span><button onclick="cn2(event,'${id}',1)">›</button></div><div class="cal-grid">`;
   DNAMES.forEach(d=>h+=`<div class="cdn">${d}</div>`);
   for(let i=0;i<first;i++)h+=`<div class="cd em"></div>`;
   for(let d=1;d<=dim;d++){
@@ -420,7 +421,8 @@ function rc2(id){
   h+=`</div>`;
   document.getElementById(id).innerHTML=h;
 }
-function cn2(id,dir){
+function cn2(e,id,dir){
+  e.stopPropagation();
   let{y,m}=cals2[id];m+=dir;
   if(m<0){m=11;y--;}if(m>11){m=0;y++;}
   cals2[id]={y,m};rc2(id);
